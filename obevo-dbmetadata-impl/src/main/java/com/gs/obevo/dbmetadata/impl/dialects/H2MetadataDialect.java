@@ -18,18 +18,18 @@ package com.gs.obevo.dbmetadata.impl.dialects;
 import java.sql.Connection;
 
 import com.gs.obevo.api.appdata.PhysicalSchema;
-import schemacrawler.schemacrawler.ExcludeAll;
-import schemacrawler.schemacrawler.SchemaCrawlerOptions;
+import schemacrawler.inclusionrule.ExcludeAll;
+import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
 
 public class H2MetadataDialect extends AbstractMetadataDialect {
     @Override
-    public void customEdits(SchemaCrawlerOptions options, Connection conn) {
+    public void customEdits(SchemaCrawlerOptionsBuilder options, Connection conn) {
         // Do not retrieve H2 functions, as versions starting with 1.4.x will complain
         // Notably, versions before that would throw a MethodNotImplementedError, which SchemaCrawler is smart enough to catch and ignore
         // However, 1.4.x throws a RuntimeException, not a SQLFeatureNotSupportedException, and so it bombs the process
         // We add this to let clients deploy correctly w/ any version
         // Note that we do not yet support routines in H2
-        options.setRoutineInclusionRule(new ExcludeAll());
+        options.includeRoutines(new ExcludeAll());
     }
 
     @Override

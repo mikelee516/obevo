@@ -31,16 +31,8 @@ import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.set.ImmutableSet;
 import org.eclipse.collections.impl.factory.Sets;
 import org.eclipse.collections.impl.list.mutable.ListAdapter;
-import schemacrawler.schemacrawler.DatabaseSpecificOverrideOptionsBuilder;
-import schemacrawler.server.hsqldb.HyperSQLDatabaseConnector;
 
 public class HsqlMetadataDialect extends AbstractMetadataDialect {
-
-    @Override
-    public DatabaseSpecificOverrideOptionsBuilder getDbSpecificOptionsBuilder(Connection conn, PhysicalSchema physicalSchema, boolean searchAllTables) {
-        return new HyperSQLDatabaseConnector().getDatabaseSpecificOverrideOptionsBuilder();
-    }
-
     @Override
     public String getSchemaExpression(PhysicalSchema physicalSchema) {
         return "(?i).*\\.?" + physicalSchema.getPhysicalName();

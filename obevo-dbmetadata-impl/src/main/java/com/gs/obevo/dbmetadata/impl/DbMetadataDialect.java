@@ -15,6 +15,7 @@
  */
 package com.gs.obevo.dbmetadata.impl;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -32,19 +33,18 @@ import org.eclipse.collections.api.collection.ImmutableCollection;
 import org.eclipse.collections.api.set.ImmutableSet;
 import schemacrawler.schema.Catalog;
 import schemacrawler.schema.Schema;
-import schemacrawler.schemacrawler.DatabaseSpecificOverrideOptionsBuilder;
-import schemacrawler.schemacrawler.SchemaCrawlerOptions;
+import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
+import schemacrawler.schemacrawler.SchemaRetrievalOptionsBuilder;
 
 public interface DbMetadataDialect {
-    DatabaseSpecificOverrideOptionsBuilder getDbSpecificOptionsBuilder(Connection conn, PhysicalSchema physicalSchema, boolean searchAllTables);
+    SchemaRetrievalOptionsBuilder getDbSpecificOptionsBuilder(Connection conn, PhysicalSchema physicalSchema, boolean searchAllTables) throws IOException;
 
     /**
      * Initializes the metadata class and the incoming options variable.
-     *
      * @param options The options object to be edited.
      * @param conn The connection to use to help w/ seting the options. Optional to use
      */
-    void customEdits(SchemaCrawlerOptions options, Connection conn);
+    void customEdits(SchemaCrawlerOptionsBuilder options, Connection conn);
 
     /**
      * Sets the schema on the connection. This is needed prior to the schemacrawler calls for some DBMS types.

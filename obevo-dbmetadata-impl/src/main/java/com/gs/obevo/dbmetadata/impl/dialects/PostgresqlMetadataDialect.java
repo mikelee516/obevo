@@ -15,6 +15,7 @@
  */
 package com.gs.obevo.dbmetadata.impl.dialects;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
@@ -39,27 +40,29 @@ import org.eclipse.collections.impl.list.mutable.ListAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import schemacrawler.schema.RoutineType;
-import schemacrawler.schemacrawler.DatabaseSpecificOverrideOptionsBuilder;
-import schemacrawler.schemacrawler.SchemaCrawlerOptions;
+import schemacrawler.schemacrawler.InformationSchemaKey;
+import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
+import schemacrawler.schemacrawler.SchemaRetrievalOptionsBuilder;
 
 public class PostgresqlMetadataDialect extends AbstractMetadataDialect {
     private static final Logger LOG = LoggerFactory.getLogger(OracleMetadataDialect.class);
 
     @Override
-    public void customEdits(SchemaCrawlerOptions options, Connection conn) {
+    public void customEdits(SchemaCrawlerOptionsBuilder options, Connection conn) {
         // postgresql only supports FUNCTIONs in its syntax, not PROCEDUREs. However, the metadata still comes
         // back as procedure. We override the metadata value using the getRoutineOverrideValue method.
-        options.setRoutineTypes(Lists.immutable.with(RoutineType.procedure).castToList());
+        options.routineTypes(Lists.immutable.with(RoutineType.procedure).castToList());
     }
 
     @Override
-    public DatabaseSpecificOverrideOptionsBuilder getDbSpecificOptionsBuilder(Connection conn, PhysicalSchema physicalSchema, boolean searchAllTables) {
-        DatabaseSpecificOverrideOptionsBuilder dbSpecificOptionsBuilder = super.getDbSpecificOptionsBuilder(conn, physicalSchema, searchAllTables);
+    public SchemaRetrievalOptionsBuilder getDbSpecificOptionsBuilder(Connection conn, PhysicalSchema physicalSchema, boolean searchAllTables) throws IOException {
+        SchemaRetrievalOptionsBuilder dbSpecificOptionsBuilder = super.getDbSpecificOptionsBuilder(conn, physicalSchema, searchAllTables);
 
         String sequenceSql = getSequenceSql(physicalSchema);
         if (sequenceSql != null) {
             // if null, then setting the sequences object to null won't help either
-            dbSpecificOptionsBuilder.withInformationSchemaViews().withSequencesSql(sequenceSql);
+            dbSpecificOptionsBuilder.withInformationSchemaViewsBuilder()
+                    .withSql(InformationSchemaKey.SEQUENCES, sequenceSql);
         }
 
         return dbSpecificOptionsBuilder;

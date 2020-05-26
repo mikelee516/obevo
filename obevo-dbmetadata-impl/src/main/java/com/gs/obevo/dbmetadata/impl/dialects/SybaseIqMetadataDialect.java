@@ -15,33 +15,33 @@
  */
 package com.gs.obevo.dbmetadata.impl.dialects;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
 import com.gs.obevo.api.appdata.PhysicalSchema;
 import org.eclipse.collections.impl.factory.Lists;
 import schemacrawler.schema.RoutineType;
-import schemacrawler.schemacrawler.DatabaseSpecificOverrideOptionsBuilder;
-import schemacrawler.schemacrawler.SchemaCrawlerOptions;
-import schemacrawler.server.sybaseiq.SybaseIQOdbcDatabaseConnector;
+import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
+import schemacrawler.schemacrawler.SchemaRetrievalOptionsBuilder;
 
 public class SybaseIqMetadataDialect extends AbstractMetadataDialect {
     private boolean odbcDriverUsed;
 
     @Override
-    public void customEdits(SchemaCrawlerOptions options, Connection conn) {
+    public void customEdits(SchemaCrawlerOptionsBuilder options, Connection conn) {
         this.odbcDriverUsed = checkIfOdbcDriver(conn);
 
         // IQ only officially supports procedures. Function syntax is supported, but is still counted as a procedure in its metadata
-        options.setRoutineTypes(Lists.immutable.with(RoutineType.procedure).castToList());
+        options.routineTypes(Lists.immutable.with(RoutineType.procedure).castToList());
     }
 
     @Override
-    public DatabaseSpecificOverrideOptionsBuilder getDbSpecificOptionsBuilder(Connection conn, PhysicalSchema physicalSchema, boolean searchAllTables) {
+    public SchemaRetrievalOptionsBuilder getDbSpecificOptionsBuilder(Connection conn, PhysicalSchema physicalSchema, boolean searchAllTables) throws IOException {
         if (odbcDriverUsed) {
-            return new SybaseIQOdbcDatabaseConnector().getDatabaseSpecificOverrideOptionsBuilder();
+            return new SybaseIQOdbcDatabaseConnector().getSchemaRetrievalOptionsBuilder(conn);
         } else {
-            return new SybaseIQFixedDatabaseConnector().getDatabaseSpecificOverrideOptionsBuilder();
+            return new SybaseIQDatabaseConnector().getSchemaRetrievalOptionsBuilder(conn);
         }
     }
 

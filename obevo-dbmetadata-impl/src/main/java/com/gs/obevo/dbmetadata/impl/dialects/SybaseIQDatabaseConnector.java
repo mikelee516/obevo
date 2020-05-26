@@ -16,8 +16,7 @@
 package com.gs.obevo.dbmetadata.impl.dialects;
 
 /*
-Need to fix getDatabaseSpecificOverrideOptionsBuilder in the original SybaseIQDatabaseConnector class.
-Until then, we have this override.
+Will port this to SchemaCrawler project soon
 
 ========================================================================
 SchemaCrawler
@@ -46,32 +45,29 @@ http://www.gnu.org/licenses/
 ========================================================================
 */
 
-import schemacrawler.schemacrawler.DatabaseSpecificOverrideOptionsBuilder;
-import schemacrawler.server.sybaseiq.SybaseIQDatabaseConnector;
+import java.io.IOException;
+import java.util.function.Predicate;
+
+import schemacrawler.schemacrawler.DatabaseServerType;
 import schemacrawler.tools.databaseconnector.DatabaseConnector;
-import schemacrawler.tools.databaseconnector.DatabaseServerType;
+import schemacrawler.tools.iosource.ClasspathInputResource;
 
-final class SybaseIQFixedDatabaseConnector
-        extends DatabaseConnector {
-
+public final class SybaseIQDatabaseConnector extends DatabaseConnector {
     private static final long serialVersionUID = 1786572065393663455L;
 
     /**
      * Same as in original {@link SybaseIQDatabaseConnector}.
      */
-    public SybaseIQFixedDatabaseConnector() {
+    public SybaseIQDatabaseConnector() throws IOException {
         super(new DatabaseServerType("sybaseiq", "SAP Sybase IQ"),
-                "/help/Connections.sybaseiq.txt",
-                "/schemacrawler-sybaseiq.config.properties",
-                "/sybaseiq.information_schema",
-                "notapplicable:.*");  // do not specify a value here as it conflicts with SAP Sybase ASE
+                new ClasspathInputResource("/schemacrawler-sybaseiq.config.properties"),
+                (informationSchemaViewsBuilder, connection) -> informationSchemaViewsBuilder.fromResourceFolder("/sybaseiqodbc.information_schema")
+        );
     }
 
-    /**
-     * Needs to just return the default value and not disable catalogs.
-     */
     @Override
-    public DatabaseSpecificOverrideOptionsBuilder getDatabaseSpecificOverrideOptionsBuilder() {
-        return super.getDatabaseSpecificOverrideOptionsBuilder();
+    protected Predicate<String> supportsUrlPredicate() {
+        // always return false here as this conflicts with SAP Sybase ASE
+        return url -> false;
     }
 }

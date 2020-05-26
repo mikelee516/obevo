@@ -15,6 +15,7 @@
  */
 package com.gs.obevo.dbmetadata.impl.dialects;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
@@ -38,8 +39,8 @@ import org.eclipse.collections.impl.factory.Sets;
 import org.eclipse.collections.impl.list.mutable.ListAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import schemacrawler.crawl.MetadataRetrievalStrategy;
-import schemacrawler.schemacrawler.DatabaseSpecificOverrideOptionsBuilder;
+import schemacrawler.schemacrawler.MetadataRetrievalStrategy;
+import schemacrawler.schemacrawler.SchemaRetrievalOptionsBuilder;
 
 /**
  * Oracle DBMS metadata dialect.
@@ -126,8 +127,8 @@ public class OracleMetadataDialect extends AbstractMetadataDialect {
     }
 
     @Override
-    public DatabaseSpecificOverrideOptionsBuilder getDbSpecificOptionsBuilder(Connection conn, PhysicalSchema physicalSchema, boolean searchAllTables) {
-        DatabaseSpecificOverrideOptionsBuilder builder = super.getDbSpecificOptionsBuilder(conn, physicalSchema, searchAllTables);
+    public SchemaRetrievalOptionsBuilder getDbSpecificOptionsBuilder(Connection conn, PhysicalSchema physicalSchema, boolean searchAllTables) throws IOException {
+        SchemaRetrievalOptionsBuilder builder = super.getDbSpecificOptionsBuilder(conn, physicalSchema, searchAllTables);
 
         if (!searchAllTables) {
             // the default schemacrawler logic is optimized to search for all tables in Oracle. But it is very slow for single-table lookups

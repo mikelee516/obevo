@@ -41,10 +41,11 @@ import org.eclipse.collections.impl.factory.Sets;
 import org.eclipse.collections.impl.list.mutable.ListAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import schemacrawler.crawl.MetadataRetrievalStrategy;
 import schemacrawler.schema.RoutineType;
-import schemacrawler.schemacrawler.DatabaseSpecificOverrideOptionsBuilder;
-import schemacrawler.schemacrawler.SchemaCrawlerOptions;
+import schemacrawler.schemacrawler.InformationSchemaKey;
+import schemacrawler.schemacrawler.MetadataRetrievalStrategy;
+import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
+import schemacrawler.schemacrawler.SchemaRetrievalOptionsBuilder;
 
 public class Db2MetadataDialect extends AbstractMetadataDialect {
     private static final Logger LOG = LoggerFactory.getLogger(Db2MetadataDialect.class);
@@ -88,8 +89,8 @@ public class Db2MetadataDialect extends AbstractMetadataDialect {
     }
 
     @Override
-    public DatabaseSpecificOverrideOptionsBuilder getDbSpecificOptionsBuilder(Connection conn, PhysicalSchema physicalSchema, boolean searchAllTables) {
-        DatabaseSpecificOverrideOptionsBuilder dbSpecificOptionsBuilder = super.getDbSpecificOptionsBuilder(conn, physicalSchema, searchAllTables);
+    public SchemaRetrievalOptionsBuilder getDbSpecificOptionsBuilder(Connection conn, PhysicalSchema physicalSchema, boolean searchAllTables) throws IOException {
+        SchemaRetrievalOptionsBuilder dbSpecificOptionsBuilder = super.getDbSpecificOptionsBuilder(conn, physicalSchema, searchAllTables);
 
         if (!searchAllTables) {
             // the default schemacrawler logic is optimized to search for all tables in DB2. But it is very slow for single-table lookups
@@ -121,13 +122,11 @@ public class Db2MetadataDialect extends AbstractMetadataDialect {
                 "  SYSCAT.VIEWS.VIEWNAME, " +
                 "  SYSCAT.VIEWS.SEQNO " +
                 "WITH UR   ";
-        dbSpecificOptionsBuilder.withInformationSchemaViews().withViewsSql(
-                sql
-        );
 
         // SEQTYPE <> 'I' is for identity columns; we don't want that when pulling user defined sequences
-        dbSpecificOptionsBuilder.withInformationSchemaViews().withSequencesSql(
-                "SELECT\n" +
+        dbSpecificOptionsBuilder.withInformationSchemaViewsBuilder()
+                .withSql(InformationSchemaKey.VIEWS, sql)
+                .withSql(InformationSchemaKey.SEQUENCES, "SELECT\n" +
                         "  NULLIF(1, 1)\n" +
                         "    AS SEQUENCE_CATALOG,\n" +
                         "  STRIP(SYSCAT.SEQUENCES.SEQSCHEMA)\n" +
@@ -150,12 +149,12 @@ public class Db2MetadataDialect extends AbstractMetadataDialect {
                         "FROM\n" +
                         "  SYSCAT.SEQUENCES\n" +
                         "WHERE SEQSCHEMA = '" + physicalSchema.getPhysicalName() + "' AND SEQTYPE <> 'I'\n" +
+
                         //"  SYSCAT.SEQUENCES.ORIGIN = 'U'\n" +
                         "ORDER BY\n" +
                         "  SYSCAT.SEQUENCES.SEQSCHEMA,\n" +
                         "  SYSCAT.SEQUENCES.SEQNAME\n" +
-                        "WITH UR\n"
-        );
+                        "WITH UR\n");
 
         return dbSpecificOptionsBuilder;
     }
@@ -178,11 +177,11 @@ public class Db2MetadataDialect extends AbstractMetadataDialect {
     }
 
     @Override
-    public void customEdits(SchemaCrawlerOptions options, Connection conn) {
+    public void customEdits(SchemaCrawlerOptionsBuilder options, Connection conn) {
         super.customEdits(options, conn);
 
         // DB2 driver doesn't support function lookups; hence, we limit it here to avoid the error message and use the searchExtraRoutines method instead to pull them in.
-        options.setRoutineTypes(Lists.immutable.with(RoutineType.procedure).castToList());
+        options.routineTypes(Lists.immutable.with(RoutineType.procedure).castToList());
     }
 
     @Override

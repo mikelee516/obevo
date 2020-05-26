@@ -49,7 +49,7 @@ import org.eclipse.collections.impl.list.mutable.ListAdapter;
 import schemacrawler.schema.Catalog;
 import schemacrawler.schema.RoutineType;
 import schemacrawler.schema.Schema;
-import schemacrawler.schemacrawler.SchemaCrawlerOptions;
+import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
 
 /**
  * Metadata dialect for MS SQL.
@@ -60,11 +60,11 @@ import schemacrawler.schemacrawler.SchemaCrawlerOptions;
  */
 public class MsSqlMetadataDialect extends AbstractMetadataDialect {
     @Override
-    public void customEdits(SchemaCrawlerOptions options, Connection conn) {
+    public void customEdits(SchemaCrawlerOptionsBuilder options, Connection conn) {
         // MS SQL driver supports SP metadata, but not functions. As a result, we must disable SchemaCrawler's own
         // lookups entirely and use our own query. (SchemaCrawler's inherent behavior for the SQL only adds to existing
         // routine data, not loading in entire new ones).
-        options.setRoutineTypes(Lists.mutable.<RoutineType>empty());
+        options.routineTypes(Lists.mutable.<RoutineType>empty());
     }
 
     @Override
