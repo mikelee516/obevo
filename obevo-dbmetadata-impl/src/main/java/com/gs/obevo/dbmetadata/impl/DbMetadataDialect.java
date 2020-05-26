@@ -44,12 +44,14 @@ public interface DbMetadataDialect {
      * @param options The options object to be edited.
      * @param conn The connection to use to help w/ seting the options. Optional to use
      */
-    void customEdits(SchemaCrawlerOptionsBuilder options, Connection conn);
+    default void customEdits(SchemaCrawlerOptionsBuilder options, Connection conn) {
+    }
 
     /**
      * Sets the schema on the connection. This is needed prior to the schemacrawler calls for some DBMS types.
      */
-    void setSchemaOnConnection(Connection conn, PhysicalSchema physicalSchema);
+    default void setSchemaOnConnection(Connection conn, PhysicalSchema physicalSchema) {
+    }
 
     String getSchemaExpression(PhysicalSchema physicalSchema);
 

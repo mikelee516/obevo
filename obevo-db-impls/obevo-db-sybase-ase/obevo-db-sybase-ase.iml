@@ -76,16 +76,10 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: us.fatehi:schemacrawler:16.7.2" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: us.fatehi:schemacrawler-hsqldb:16.7.2" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: us.fatehi:schemacrawler-commandline:16.7.2" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: info.picocli:picocli:4.2.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: info.picocli:picocli-shell-jline3:4.2.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.jline:jline:3.13.2" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:slf4j-jdk14:1.7.25" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: us.fatehi:schemacrawler-postgresql:16.7.2" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: us.fatehi:schemacrawler-oracle:16.7.2" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: us.fatehi:schemacrawler-sqlserver:16.7.2" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: us.fatehi:schemacrawler-db2:16.7.2" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: com.ibm.db2:jcc:11.5.0.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: us.fatehi:schemacrawler-mysql:16.7.2" level="project" />
     <orderEntry type="module" module-name="obevo-db-h2" />
     <orderEntry type="library" name="Maven: com.h2database:h2:1.4.187" level="project" />

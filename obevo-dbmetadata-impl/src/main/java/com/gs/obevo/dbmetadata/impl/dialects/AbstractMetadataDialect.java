@@ -56,14 +56,6 @@ public abstract class AbstractMetadataDialect implements DbMetadataDialect {
         return databaseConnector.getSchemaRetrievalOptionsBuilder(conn);
     }
 
-    @Override
-    public void customEdits(SchemaCrawlerOptionsBuilder options, Connection conn) {
-    }
-
-    @Override
-    public void setSchemaOnConnection(Connection conn, PhysicalSchema physicalSchema) {
-    }
-
     /**
      * Executes the given update statement on the connection - convenience method for subclasses.
      */

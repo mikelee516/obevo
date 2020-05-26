@@ -118,14 +118,28 @@ public class DbMetadataManagerImpl implements DbMetadataManager {
 
             SchemaRetrievalOptionsBuilder dbSpecificOptionsBuilder = dbMetadataDialect.getDbSpecificOptionsBuilder(conn, physicalSchema, searchAllTables);
             SchemaRetrievalOptions dbSpecificOptions = dbSpecificOptionsBuilder.toOptions();
-            this.enrichSchemaCrawlerOptions(conn, options, physicalSchema, tableName, procedureName);
 
-            if (tableName == null && procedureName != null && !searchAllTables) {
+            this.dbMetadataDialect.customEdits(options, conn);
+
+            String schemaExpression = Objects.requireNonNull(this.dbMetadataDialect.getSchemaExpression(physicalSchema), "Schema expression was not returned for schema " + physicalSchema + " by " + dbMetadataDialect);
+            options.includeSchemas(new RegularExpressionInclusionRule(schemaExpression));
+
+            if (tableName != null) {
+                options.includeTables(new RegularExpressionInclusionRule(this.dbMetadataDialect.getTableExpression(physicalSchema, tableName)));
+            } else if (searchAllTables) {
+                options.includeTables(new IncludeAll());
+            } else {
                 options.includeTables(new ExcludeAll());
             }
-            if (procedureName == null && tableName != null && !searchAllProcedures) {
+
+            if (procedureName != null) {
+                options.includeRoutines(new RegularExpressionInclusionRule(this.dbMetadataDialect.getRoutineExpression(physicalSchema, procedureName)));
+            } else if (searchAllProcedures) {
+                options.includeRoutines(new IncludeAll());
+            } else {
                 options.includeRoutines(new ExcludeAll());
             }
+
             if (schemaInfoLevel.isRetrieveSequences()) {
                 options.includeSequences(new IncludeAll());
             }
@@ -320,17 +334,4 @@ public class DbMetadataManagerImpl implements DbMetadataManager {
         }
     }
 
-    private void enrichSchemaCrawlerOptions(Connection conn, SchemaCrawlerOptionsBuilder options, PhysicalSchema physicalSchema, String tableName,
-            String procedureName) {
-        this.dbMetadataDialect.customEdits(options, conn);
-
-        String schemaExpression = Objects.requireNonNull(this.dbMetadataDialect.getSchemaExpression(physicalSchema), "Schema expression was not returned for schema " + physicalSchema + " by " + dbMetadataDialect);
-        options.includeSchemas(new RegularExpressionInclusionRule(schemaExpression));
-        if (tableName != null) {
-            options.includeTables(new RegularExpressionInclusionRule(this.dbMetadataDialect.getTableExpression(physicalSchema, tableName)));
-        }
-        if (procedureName != null) {
-            options.includeTables(new RegularExpressionInclusionRule(this.dbMetadataDialect.getRoutineExpression(physicalSchema, procedureName)));
-        }
-    }
 }

@@ -66,7 +66,6 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: us.fatehi:schemacrawler-oracle:16.7.2" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: us.fatehi:schemacrawler-sqlserver:16.7.2" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: us.fatehi:schemacrawler-db2:16.7.2" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: com.ibm.db2:jcc:11.5.0.0" level="project" />
     <orderEntry type="module" module-name="obevo-db-sybase-ase" />
     <orderEntry type="module" module-name="obevo-db-sybase-iq" />
     <orderEntry type="module" module-name="obevo-db-postgresql" />
@@ -80,11 +79,6 @@
     <orderEntry type="library" name="Maven: com.microsoft.sqlserver:mssql-jdbc:6.1.0.jre7" level="project" />
     <orderEntry type="module" module-name="obevo-db-mysql" />
     <orderEntry type="library" name="Maven: us.fatehi:schemacrawler-mysql:16.7.2" level="project" />
-    <orderEntry type="library" name="Maven: us.fatehi:schemacrawler-commandline:16.7.2" level="project" />
-    <orderEntry type="library" name="Maven: info.picocli:picocli:4.2.0" level="project" />
-    <orderEntry type="library" name="Maven: info.picocli:picocli-shell-jline3:4.2.0" level="project" />
-    <orderEntry type="library" name="Maven: org.jline:jline:3.13.2" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:slf4j-jdk14:1.7.25" level="project" />
     <orderEntry type="module" module-name="obevo-db-oracle" />
     <orderEntry type="module" module-name="obevo-mongodb" />
     <orderEntry type="module" module-name="obevo-core" />

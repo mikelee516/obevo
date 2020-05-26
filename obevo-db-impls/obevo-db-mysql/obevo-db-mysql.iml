@@ -72,15 +72,9 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: us.fatehi:schemacrawler-oracle:16.7.2" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: us.fatehi:schemacrawler-sqlserver:16.7.2" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: us.fatehi:schemacrawler-db2:16.7.2" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: com.ibm.db2:jcc:11.5.0.0" level="project" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:8.0.18" level="project" />
     <orderEntry type="library" name="Maven: com.google.protobuf:protobuf-java:3.6.1" level="project" />
     <orderEntry type="library" name="Maven: us.fatehi:schemacrawler-mysql:16.7.2" level="project" />
-    <orderEntry type="library" name="Maven: us.fatehi:schemacrawler-commandline:16.7.2" level="project" />
-    <orderEntry type="library" name="Maven: info.picocli:picocli:4.2.0" level="project" />
-    <orderEntry type="library" name="Maven: info.picocli:picocli-shell-jline3:4.2.0" level="project" />
-    <orderEntry type="library" name="Maven: org.jline:jline:3.13.2" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:slf4j-jdk14:1.7.25" level="project" />
     <orderEntry type="module" module-name="obevo-db-internal-test-helper" scope="TEST" />
     <orderEntry type="module" module-name="obevo-core" scope="TEST" production-on-test="" />
     <orderEntry type="module" module-name="obevo-db" scope="TEST" production-on-test="" />
