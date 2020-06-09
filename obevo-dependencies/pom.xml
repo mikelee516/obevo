@@ -35,8 +35,7 @@
     </description>
 
     <properties>
-        <schemacrawler.version>16.7.2</schemacrawler.version>
-        <schemacrawler-iq.version>14.16.03-java7</schemacrawler-iq.version>  <!-- IQ is maintained as a separate product; hence the separate version -->
+        <schemacrawler.version>16.8.1</schemacrawler.version>
     </properties>
 
     <build>
@@ -144,6 +143,17 @@
                         <groupId>org.hsqldb</groupId>
                         <artifactId>hsqldb</artifactId>
                     </exclusion>
+                    <exclusion>
+                        <groupId>us.fatehi</groupId>
+                        <artifactId>schemacrawler-commandline</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>us.fatehi</groupId>
+                <artifactId>schemacrawler-sapiq</artifactId>
+                <version>${schemacrawler.version}</version>
+                <exclusions>
                     <exclusion>
                         <groupId>us.fatehi</groupId>
                         <artifactId>schemacrawler-commandline</artifactId>
