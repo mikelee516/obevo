@@ -15,13 +15,20 @@
  */
 package com.gs.obevo.dbmetadata.impl.dialects;
 
+import java.io.IOException;
 import java.sql.Connection;
 
 import com.gs.obevo.api.appdata.PhysicalSchema;
 import schemacrawler.inclusionrule.ExcludeAll;
 import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
+import schemacrawler.schemacrawler.SchemaRetrievalOptionsBuilder;
 
 public class H2MetadataDialect extends AbstractMetadataDialect {
+    @Override
+    public SchemaRetrievalOptionsBuilder getDbSpecificOptionsBuilder(Connection conn, PhysicalSchema physicalSchema, boolean searchAllTables) throws IOException {
+        return new H2DatabaseConnector().getSchemaRetrievalOptionsBuilder(conn);
+    }
+
     @Override
     public void customEdits(SchemaCrawlerOptionsBuilder options, Connection conn) {
         // Do not retrieve H2 functions, as versions starting with 1.4.x will complain
