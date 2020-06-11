@@ -57,6 +57,7 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: us.fatehi:schemacrawler-oracle:16.7.2" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: us.fatehi:schemacrawler-sqlserver:16.7.2" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: us.fatehi:schemacrawler-db2:16.7.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: us.fatehi:schemacrawler-sapiq:16.7.2" level="project" />
     <orderEntry type="module" module-name="obevo-db-sybase-ase" />
     <orderEntry type="module" module-name="obevo-db-sybase-iq" />
     <orderEntry type="module" module-name="obevo-db-postgresql" />
